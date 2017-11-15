@@ -1,17 +1,24 @@
 <?php
 require 'db-connect.php';
 
+#parameter validation from url, this makes sure every params in 
+#the url is not missing before excuting the controller functions
+#func_num_args counts the number of params in the checkField function 
+#before performing validations... 
+#where $fields are equal to func_get_args($args)... and args is from the forLoop
+#function returns true or false....
 function checkFields(){
     for ($i = 0; $i < func_num_args(); $i++) {
         $field = func_get_arg($i);
         if ($field === null)
             return false;
     }
-
     return true;
 }
 
-//get string from url
+#retrives the string from the params in the urls where it's args is name of the params 
+#checks for the given args, see if empty, performs a get_request and excutes the controller functions
+#returns values or return null if empty...
 function getStringParams($value)
 {
     if (isset($_GET[$value]) && !empty($_GET[$value]))
@@ -24,11 +31,26 @@ function getStringParams($value)
     return null;
 }
 
-//return get request
+#gets value and send to controller functions.
+function getParams($value)
+{
+    if (isset($_GET[$value]))
+        return $_GET[$value];
+
+    return null;
+}
+
+//
 function get_value($value){
     if($value == " ")
         return null;
     return "'". mysqli_real_escape_string($GLOBALS['connect'], $value). "'";
+}
+
+function get_file($file){
+    if($file == " ")
+    return null;
+    return  "'".$_FILES[$file]."'";
 }
 
 //return post request
@@ -77,3 +99,4 @@ function api_response($success, $data, $error_message){
     $result['error_message'] = $error_message;
     return json_encode($result);
 }
+
