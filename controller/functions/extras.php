@@ -24,9 +24,9 @@ if(isset($_GET['do'])){
             break;
 
         #find free_lancer by location 
-        case 'srch_loc' :
+        case 'sl' :
             try {
-                $location = getStringParams('location');
+                $location = getStringParams('loc');
                 if(checkFields($location)){
                     $searchLocation = doFindFreeLancerByLocation($location);
                     echo $searchLocation;
@@ -40,7 +40,7 @@ if(isset($_GET['do'])){
             break;
 
         #search for free_lancer by category [men, women, both]
-        case 'srch_cate' :
+        case 'sc' :
             try{
                 $category = getStringParams('category');
                 if(checkFields($category)){

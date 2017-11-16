@@ -10,11 +10,19 @@ function doAddFreeLancer($name, $email, $location, $phone, $categories){
         $phone = get_value($phone);
         $categories = get_value($categories);
 
-        $query = "INSERT INTO free_lancer (name, email, location, category, phone) VALUES ($name, $email, $location, $categories, $phone)";
-        $auto = querydbReturnNewID($query);
+      $query = "SELECT email FROM free_lancer WHERE email = $email";
+        $sql_querydb = querydb($query);
+        if(mysqli_fetch_assoc($sql_querydb) > 1){
+            return api_response(false, null, "user already exist");
+        }
 
-        $free_lancer['free_lancer'] = $auto;
-        return api_response(true, null, 'done');
+            $query = "INSERT INTO free_lancer (name, email, location, category, phone) VALUES ($name, $email, $location, $categories, $phone)";
+            $auto = querydbReturnNewID($query);
+    
+            $free_lancer['free_lancer'] = $auto;
+            return api_response(true, null, 'done');
+        
+
 
     }catch(Exception $ex){
         return api_response(false, null, $ex->getMessage());
